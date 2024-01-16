@@ -1,27 +1,27 @@
 import Home from '@/components/Home-mobile/Home'
-import { Welcome} from '@/interfaces'
-
-
-async function getData() {
-  const res = await fetch ('https://quiz-alpha-five.vercel.app/data.json')
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
- 
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error('Failed to fetch data')
-  }
-  return res.json()
-}
+import { Welcome, YhZav } from '@/interfaces'
+import fs from "fs"
+import { parseString } from "xml2js"
+import 'server-only'
+import styles from './page.module.css'
 
 export default async function HomePage() {
-  
-  const data: Welcome = await getData()
-  
 
+  const xmldata = fs.readFileSync('public/rs202320.xml', 'utf-8')
+ 
+      parseString(xmldata, function (err, results){ 
+          if(err){
+            return null
+          }else{
+            let data = (JSON.stringify(results))
+            fs.writeFileSync('public/data.json', data, 'utf-8')  
+          }})
+        
+  const data: Welcome = JSON.parse(fs.readFileSync('public/data.json', 'utf-8'))
+  console.log('result', data.YhZav.Week[0])
   return (
-    <>
-      <Home YhZav={data.YhZav} />
-    </>
+    <section className={styles.section}>
+      <Home YhZav={data.YhZav}/>
+    </section>
   )
 }
