@@ -1,8 +1,9 @@
+
 import { IDaySingle } from "@/interfaces"
-import { FC } from "react"
+import Card from "./Card";
 
 
-const Day:FC<IDaySingle> = ({day, dataMon}) => {
+const Day = ({day, dataMon}:IDaySingle) => {
 
     const getDay = (num: string) => {
         switch (num){
@@ -26,10 +27,10 @@ const Day:FC<IDaySingle> = ({day, dataMon}) => {
         let monday = dataMon.dayMon
         let startDay = dataMon.dayWeekStart
         let EndDay = dataMon.dayWeekEnd
-        let data = Number(startDay[0]) + Number(day._N) - 1
+        let data = Number(startDay[0]) + Number(day.$.N) - 1
         if(monday == startDay){
             if(startDay[1] === EndDay[1]){
-                data = Number(startDay[0]) + Number(day._N) - 1
+                data = Number(startDay[0]) + Number(day.$.N) - 1
             }
         }
         return data
@@ -37,11 +38,11 @@ const Day:FC<IDaySingle> = ({day, dataMon}) => {
     
     return(
         <>
-            {day._N != 'undefined' ? (
-                <h3><span>{String(getNumber())}</span><span>, </span>{getDay(day._N)}</h3>
-            ) : (
-                <h2>Отдыхаем</h2>
-            )}
+            
+                <h3><span>{String(getNumber())}</span><span>, </span>{getDay(day.$.N)}</h3>
+                {day.Lesson.map((lesson) => (
+                    <Card lesson={lesson} />
+                ))}
             
         </>
     )

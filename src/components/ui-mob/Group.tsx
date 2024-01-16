@@ -1,27 +1,23 @@
+
+import 'server-only'
 import { IGroupSingle} from "@/interfaces"
-import { FC } from "react"
-import Card from "./Card"
 import Day from "./Day"
 
-const Group: FC<IGroupSingle> = ({group, dataMon}) => {
+export default async function Group({group, dataMon}:IGroupSingle) {
 
-    const short = group.Timetable?.Day
+    
     const unDay ={
         Lesson: [''],
         _N:''
     }
 
+    const short = group.Timetable[0].Day
     return(
         <>
-            <h3>{group._Name}</h3>
-            {short ? (
-                short.length ? (
-                    short.map((day) => (
-                        <Day key={day._N} day={day} dataMon={dataMon}/> 
-                ))) : ''
-            ): ''}
+            <h3>{group.$.Name}</h3>
+            {short.map((day) => (
+                <Day key={day.$.N} day={day} dataMon={dataMon}/> 
+            ))}
         </>
     )
 }
-
-export default Group
